@@ -3,6 +3,7 @@ using System;
 namespace AdapterDeisngPatterns
 {
     using System;
+    using UnityEngine;
 
     // Target Interface
     public interface IMessageService
@@ -52,5 +53,87 @@ namespace AdapterDeisngPatterns
         }
     }
 
+    public interface ICharge
+    {
+        void Charge();
+    }
+
+
+    public class LaptopCharge : ICharge
+    {
+        public void Charge()
+        {
+            Debug.Log("Laptop şarjı ile cihaz şarj ediliyor.");
+        }
+
+    }
+
+    public class LaptopPlusCharge
+    {
+        public void PlusCharge()
+        {
+            Debug.Log("Laptop Plus şarjı ile cihaz şarj ediliyor");
+        }
+    }
+
+
+    public class LaptopChargeAdapte : ICharge
+    {
+        private LaptopPlusCharge laptopPlusCharge;
+
+        public LaptopChargeAdapte(LaptopPlusCharge laptopPlusCharge)
+        {
+            this.laptopPlusCharge = laptopPlusCharge;
+        }
+
+        public void Charge()
+        {
+            laptopPlusCharge.PlusCharge();
+        }
+    }
+
+
+    public interface IIOSDevice
+    {
+        void Connect(); 
+    }
+
+    public class MacBook
+    {
+        public void ConnectPhono(IIOSDevice appleDevice)
+        {
+            appleDevice.Connect();
+        }
+    }
+
+    public class IOSPhone : IIOSDevice
+    {
+        public void Connect()
+        {
+            Debug.Log("IOS cihaz bağlandı.");
+        }
+    }
+
+    public class AndroidPhone
+    {
+        public void ConnectAndroid()
+        {
+            Debug.Log("AOS cihaz bağlandı.");
+        }
+    }
+
+    public class SamsungAdapter : IIOSDevice
+    {
+        private AndroidPhone androidPhone;
+        public SamsungAdapter(AndroidPhone androidPhone)
+        {
+            this.androidPhone=androidPhone;
+        }
+
+        public void Connect()
+        {
+            androidPhone.ConnectAndroid();
+        }
+    }
 
 }
